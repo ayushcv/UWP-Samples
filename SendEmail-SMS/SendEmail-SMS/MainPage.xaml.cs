@@ -17,7 +17,6 @@ namespace SendEmail_SMS
         {
             this.InitializeComponent();
         }
-
         private async void Button_Tapped(object sender, TappedRoutedEventArgs e)
         {
             ContactPicker contactPicker = new ContactPicker();
@@ -70,14 +69,14 @@ namespace SendEmail_SMS
             Contact contact = await contactPicker.PickContactAsync();
 
             // You need to add required capabilities in your App manifest file for access contact list.
-            ContactStore contactStore = await ContactManager.RequestStoreAsync(ContactStoreAccessType.AllContactsReadOnly);
+            ContactStore contactStore = await ContactManager.RequestStoreAsync(ContactStoreAccessType.AllContactsReadWrite);
 
             if (contact != null)
             {
                 // Get Selected Contact
                 Contact realContact = await contactStore.GetContactAsync(contact.Id);
 
-                SendSMS(realContact, "This is test SMS.");
+                SendSMS(realContact, ms.Text);
             }
         }
 
@@ -92,7 +91,9 @@ namespace SendEmail_SMS
                 chatMessage.Recipients.Add(phone.Number);
 
                 await Windows.ApplicationModel.Chat.ChatMessageManager.ShowComposeSmsMessageAsync(chatMessage);
-            }        }
+            }
+        }
 
+        
     }
 }
